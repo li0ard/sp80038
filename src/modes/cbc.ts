@@ -42,7 +42,7 @@ export const cbc_decrypt = (
     blockSize: number,
     data: TArg<Uint8Array>,
     iv: TArg<Uint8Array>
-) => {
+): TRet<Uint8Array> => {
     checkBlocksize(blockSize);
     checkDataAligned(data, blockSize)
     checkIvSize(iv, blockSize);
