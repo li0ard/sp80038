@@ -1,5 +1,5 @@
 {
-    "name": "@li0ard/gost3413",
+    "name": "@li0ard/sp80038",
     "version": "0.1.0",
     "exports": "./src/index.ts",
     "publish": {
