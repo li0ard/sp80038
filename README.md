@@ -1,6 +1,6 @@
 <p align="center">
     <b>@li0ard/sp80038</b><br>
-    <b>Cipher modes and padding's according to GOST R 34.13-2015 in pure TypeScript</b>
+    <b>Cipher modes according to NIST SP 800-38 in pure TypeScript</b>
     <br>
     <a href="https://li0ard.is-cool.dev/sp80038">docs</a>
     <br><br>
