@@ -1,4 +1,5 @@
 export * from "./modes/cbc.js";
+export * from "./modes/ccm.js";
 export * from "./modes/cfb.js";
 export * from "./modes/cmac.js";
 export * from "./modes/ctr.js";

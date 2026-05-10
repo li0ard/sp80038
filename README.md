@@ -32,6 +32,8 @@ bunx jsr i @li0ard/sp80038
 - [x] Counter (CTR)
 - [x] Output Feedback (OFB)
 - [x] CMAC
+- [x] Galois/Counter (GCM)
+- [x] Counter with CBC-MAC (CCM)
 
 ## Features
 - Provides simple and modern API

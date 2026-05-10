@@ -57,3 +57,10 @@ export const cbc_decrypt = (
 
     return output;
 }
+
+/** Wrapper for CBC-MAC */
+export const cbcmac = (
+    encrypter: CipherFunc,
+    blockSize: number,
+    data: TArg<Uint8Array>
+): TRet<Uint8Array> => cbc_encrypt(encrypter, blockSize, data, new Uint8Array(blockSize)).slice(-blockSize);
