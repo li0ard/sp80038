@@ -33,6 +33,7 @@ bunx jsr i @li0ard/sp80038
 - [x] Counter (CTR)
 - [x] Electronic Codebook (ECB)
 - [x] Galois/Counter (GCM)
+- [x] Infinite Garble Extension (IGE)
 - [x] Output Feedback (OFB)
 
 ## Features
