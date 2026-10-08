@@ -26,9 +26,8 @@ export const ctr = (
     anumber(blockSize, "blockSize");
     abytes(msg, undefined, "msg");
     abytes(iv, blockSize, "iv");
-
-    const buf = copyBytes(iv);
-    const output = new Uint8Array(msg.length);
+    const buf = copyBytes(iv),
+        output = new Uint8Array(msg.length);
     for (let i = 0; i < msg.length; i += blockSize) {
         const ct = xorBytes(encrypter(buf), msg.subarray(i, i + blockSize));
         output.set(ct, i);

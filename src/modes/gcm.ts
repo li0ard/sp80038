@@ -24,15 +24,15 @@ export const gcm_encrypt = (
     if(blockSize != GCM_BLOCKSIZE) throw new Error("Invalid block size. Must be 16");
     if(nonce.length > 16) throw new Error("Invalid nonce");
 
-    const h = encrypter(new Uint8Array(GCM_BLOCKSIZE));
-    const counter = new Uint8Array(GCM_BLOCKSIZE);
+    const h = encrypter(new Uint8Array(GCM_BLOCKSIZE)),
+        counter = new Uint8Array(GCM_BLOCKSIZE);
     deriveCounter(h, counter, nonce);
 
     const tag_mask = galoisCtr(encrypter, new Uint8Array(GCM_BLOCKSIZE), counter);
     gcmBlockAddOne(counter);
 
-    const out = galoisCtr(encrypter, plaintext, counter);
-    const tag = gcmAuth(h, tag_mask, out, aad);
+    const out = galoisCtr(encrypter, plaintext, counter),
+        tag = gcmAuth(h, tag_mask, out, aad);
     
     return concatBytes(out, tag);
 }
@@ -61,16 +61,16 @@ export const gcm_decrypt = (
     if(ciphertext.length < 16 || ciphertext.length > ((0x100000000 - 2) * 16 + 16))
         throw new Error("Invalid ciphertext length");
 
-    const h = encrypter(new Uint8Array(GCM_BLOCKSIZE));
-    const counter = new Uint8Array(GCM_BLOCKSIZE);
+    const h = encrypter(new Uint8Array(GCM_BLOCKSIZE)),
+        counter = new Uint8Array(GCM_BLOCKSIZE);
     deriveCounter(h, counter, nonce);
 
     const tag_mask = galoisCtr(encrypter, new Uint8Array(GCM_BLOCKSIZE), counter);
     gcmBlockAddOne(counter);
 
-    const tag_ct = ciphertext.subarray(-16);
-    const ct = ciphertext.subarray(0,-16);
-    const tag_expected = gcmAuth(h, tag_mask, ct, aad);
+    const tag_ct = ciphertext.subarray(-16),
+        ct = ciphertext.subarray(0,-16),
+        tag_expected = gcmAuth(h, tag_mask, ct, aad);
     if(!equalBytes(tag_ct, tag_expected))
         throw new Error("Invalid tag");
     

@@ -29,20 +29,16 @@ export const cmac = (
 ): TRet<Uint8Array> => {
     anumber(blockSize, "blockSize");
     abytes(msg, undefined, "msg");
-    const Rb = blockSize === 16 ? Rb128 : Rb64;
-
-    const L = encrypter(new Uint8Array(blockSize));
+    const Rb = blockSize === 16 ? Rb128 : Rb64,
+        L = encrypter(new Uint8Array(blockSize));
     
     const k1 = new Uint8Array(blockSize);
-    const msb = shift1(L, k1);
-    if (msb) k1[blockSize - 1] ^= Rb;
-
+    if (shift1(L, k1)) k1[blockSize - 1] ^= Rb;
     const k2 = new Uint8Array(blockSize);
-    const msb2 = shift1(k1, k2);
-    if (msb2) k2[blockSize - 1] ^= Rb;
+    if (shift1(k1, k2)) k2[blockSize - 1] ^= Rb;
 
-    const n = Math.ceil(msg.length / blockSize) || 1;
-    const lastBlockComplete = msg.length > 0 && msg.length % blockSize === 0;
+    const n = Math.ceil(msg.length / blockSize) || 1,
+        lastBlockComplete = msg.length > 0 && msg.length % blockSize === 0;
 
     const buf = new Uint8Array(blockSize);
     for (let i = 0; i < n - 1; i++) {
@@ -56,8 +52,8 @@ export const cmac = (
         k1
     );
     else {
-        const padded = new Uint8Array(blockSize);
-        const remaining = msg.length - (n - 1) * blockSize;
+        const padded = new Uint8Array(blockSize),
+            remaining = msg.length - (n - 1) * blockSize;
         padded.set(msg.subarray((n - 1) * blockSize));
         padded[remaining] = 0x80;
         lastBlock = xorBytes(padded, k2);

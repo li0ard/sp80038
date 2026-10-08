@@ -28,16 +28,30 @@ const crypt = (
     return out;
 }
 
+/**
+ * Wrapper for Infinite Garble Extension (IGE) mode
+ * @param encrypter Cipher function for encryption, that takes block as input
+ * @param blockSize Cipher block size
+ * @param plaintext Plaintext
+ * @param iv Initialization vector
+ */
 export const ige_encrypt = (
     encrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>,
+    plaintext: TArg<Uint8Array>,
     iv: TArg<Uint8Array>
-): TRet<Uint8Array> => crypt(encrypter, blockSize, data, iv, false);
+): TRet<Uint8Array> => crypt(encrypter, blockSize, plaintext, iv, false);
 
+/**
+ * Wrapper for Infinite Garble Extension (IGE) mode
+ * @param decrypter Cipher function for decryption, that takes block as input
+ * @param blockSize Cipher block size
+ * @param ciphertext Ciphertext
+ * @param iv Initialization vector
+ */
 export const ige_decrypt = (
     decrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>,
+    ciphertext: TArg<Uint8Array>,
     iv: TArg<Uint8Array>
-): TRet<Uint8Array> => crypt(decrypter, blockSize, data, iv, true);
+): TRet<Uint8Array> => crypt(decrypter, blockSize, ciphertext, iv, true);

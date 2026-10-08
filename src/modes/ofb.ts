@@ -20,8 +20,8 @@ export const ofb = (
     abytes(msg, undefined, "msg");
     abytes(iv, blockSize, "iv");
 
-    const buf = copyBytes(iv);
-    const output = new Uint8Array(msg.length);
+    const buf = copyBytes(iv),
+        output = new Uint8Array(msg.length);
     for (let i = 0; i < msg.length; i += blockSize) {
         const enc = encrypter(buf);
         output.set(xorBytes(enc, msg.subarray(i, i + blockSize)), i);

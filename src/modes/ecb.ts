@@ -16,7 +16,6 @@ export const ecb = (
 ): TRet<Uint8Array> => {
     anumber(blockSize, "blockSize");
     abytesAligned(msg, blockSize, "msg");
-
     const output = new Uint8Array(msg.length);
     for(let i = 0; i < msg.length; i += blockSize)
         output.set(crypter(msg.subarray(i, i + blockSize)), i);

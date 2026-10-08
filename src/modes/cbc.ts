@@ -19,8 +19,8 @@ export const cbc_encrypt = (
     abytesAligned(plaintext, blockSize, "plaintext");
     abytes(iv, blockSize, "iv");
 
-    const buf = copyBytes(iv);
-    const output = new Uint8Array(plaintext.length);
+    const buf = copyBytes(iv),
+        output = new Uint8Array(plaintext.length);
     for(let i = 0; i < plaintext.length; i += blockSize) {
         const blk = encrypter(xorBytes(plaintext.subarray(i, i + blockSize), buf));
         output.set(blk, i);
@@ -47,8 +47,8 @@ export const cbc_decrypt = (
     abytesAligned(ciphertext, blockSize, "ciphertext");
     abytes(iv, blockSize, "iv");
 
-    const buf = copyBytes(iv);
-    const output = new Uint8Array(ciphertext.length);
+    const buf = copyBytes(iv),
+        output = new Uint8Array(ciphertext.length);
     for(let i = 0; i < ciphertext.length; i+= blockSize) {
         const blk = ciphertext.subarray(i,i + blockSize);
         output.set(xorBytes(decrypter(blk), buf), i);

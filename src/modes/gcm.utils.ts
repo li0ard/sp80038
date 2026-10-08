@@ -1,6 +1,7 @@
 import { concatBytes, copyBytes, numberToBytesBE, type TArg, type TRet } from "@noble/ciphers/utils.js";
 import { xorBytes } from "../utils.js";
 import { GHASH } from "@noble/ciphers/_polyval.js";
+import type { CipherFunc } from "../types.js";
 
 export const GCM_BLOCKSIZE = 16;
 
@@ -15,7 +16,7 @@ export const gcmBlockAddOne = (a: TArg<Uint8Array>) => {
 }
 
 export const galoisCtr = (
-    encrypter: (data: TArg<Uint8Array>) => TRet<Uint8Array>,
+    encrypter: CipherFunc,
     data: TArg<Uint8Array>,
     iv: TArg<Uint8Array>
 ): TRet<Uint8Array> => {

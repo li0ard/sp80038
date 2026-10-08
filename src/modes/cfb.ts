@@ -23,14 +23,13 @@ export const cfb_encrypt = (
     anumber(s, "s");
     if (s < 1 || s > blockSize) throw new Error("CFB: s must be between 1 and blockSize");
 
-    const buf = copyBytes(iv);
-    const output = new Uint8Array(plaintext.length);
+    const buf = copyBytes(iv),
+        output = new Uint8Array(plaintext.length);
     for (let i = 0; i < plaintext.length; i += s) {
-        const keystream = encrypter(buf);
-        const seg = Math.min(s, plaintext.length - i);
-        const ct = xorBytes(keystream.subarray(0, seg), plaintext.subarray(i, i + seg));
+        const keystream = encrypter(buf),
+            seg = Math.min(s, plaintext.length - i),
+            ct = xorBytes(keystream.subarray(0, seg), plaintext.subarray(i, i + seg));
         output.set(ct, i);
-        
         buf.copyWithin(0, s);
         buf.set(ct, blockSize - s);
     }
@@ -59,14 +58,13 @@ export const cfb_decrypt = (
     anumber(s, "s");
     if (s < 1 || s > blockSize) throw new Error("CFB: s must be between 1 and blockSize");
 
-    const buf = copyBytes(iv);
-    const output = new Uint8Array(ciphertext.length);
+    const buf = copyBytes(iv),
+        output = new Uint8Array(ciphertext.length);
     for (let i = 0; i < ciphertext.length; i += s) {
-        const keystream = encrypter(buf);
-        const seg = Math.min(s, ciphertext.length - i);
-        const ct = ciphertext.subarray(i, i + seg);
+        const keystream = encrypter(buf),
+            seg = Math.min(s, ciphertext.length - i),
+            ct = ciphertext.subarray(i, i + seg);
         output.set(xorBytes(keystream.subarray(0, seg), ct), i);
-        
         buf.copyWithin(0, s);
         buf.set(ct, blockSize - s);
     }
