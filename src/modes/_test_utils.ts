@@ -20,3 +20,11 @@ export const PLAINTEXT = hexToBytes(
 export const KEY128 = hexToBytes("2b7e151628aed2a6abf7158809cf4f3c");
 export const KEY192 = hexToBytes("8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b");
 export const KEY256 = hexToBytes("603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4");
+
+export const ENCRYPTER128 = getEncrypter(KEY128);
+export const ENCRYPTER192 = getEncrypter(KEY192);
+export const ENCRYPTER256 = getEncrypter(KEY256);
+
+export const DECRYPTER128 = getDecrypter(KEY128);
+export const DECRYPTER192 = getDecrypter(KEY192);
+export const DECRYPTER256 = getDecrypter(KEY256);

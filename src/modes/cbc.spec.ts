@@ -1,7 +1,7 @@
 import { hexToBytes } from "@noble/ciphers/utils.js";
 import { describe, test, expect } from "bun:test";
-import { cbc_decrypt, cbc_encrypt } from "../src/";
-import { getDecrypter, getEncrypter, IV, KEY128, KEY192, KEY256, PLAINTEXT } from "./_test_utils.js";
+import { cbc_decrypt, cbc_encrypt } from "./cbc.js";
+import { DECRYPTER128, DECRYPTER192, DECRYPTER256, ENCRYPTER128, ENCRYPTER192, ENCRYPTER256, IV, PLAINTEXT } from "./_test_utils.js";
 
 describe("CBC", () => {
     test("128 bits", () => {
@@ -12,8 +12,8 @@ describe("CBC", () => {
             "3ff1caa1681fac09120eca307586e1a7"
         );
 
-        expect(cbc_encrypt(getEncrypter(KEY128), 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
-        expect(cbc_decrypt(getDecrypter(KEY128), 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
+        expect(cbc_encrypt(ENCRYPTER128, 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
+        expect(cbc_decrypt(DECRYPTER128, 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
     });
 
     test("192 bits", () => {
@@ -24,8 +24,8 @@ describe("CBC", () => {
             "08b0e27988598881d920a9e64f5615cd"
         );
 
-        expect(cbc_encrypt(getEncrypter(KEY192), 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
-        expect(cbc_decrypt(getDecrypter(KEY192), 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
+        expect(cbc_encrypt(ENCRYPTER192, 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
+        expect(cbc_decrypt(DECRYPTER192, 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
     });
 
     test("256 bits", () => {
@@ -36,7 +36,7 @@ describe("CBC", () => {
             "b2eb05e2c39be9fcda6c19078c6a9d1b"
         );
 
-        expect(cbc_encrypt(getEncrypter(KEY256), 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
-        expect(cbc_decrypt(getDecrypter(KEY256), 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
+        expect(cbc_encrypt(ENCRYPTER256, 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
+        expect(cbc_decrypt(DECRYPTER256, 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
     });
 });

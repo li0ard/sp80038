@@ -1,7 +1,7 @@
 import { hexToBytes } from "@noble/ciphers/utils.js";
 import { describe, test, expect } from "bun:test";
-import { cfb_decrypt, cfb_encrypt } from "../src/index.js";
-import { getEncrypter, IV, KEY128, KEY192, KEY256, PLAINTEXT } from "./_test_utils.js";
+import { cfb_decrypt, cfb_encrypt } from "./cfb.js";
+import { ENCRYPTER128, ENCRYPTER192, ENCRYPTER256, IV, PLAINTEXT } from "./_test_utils.js";
 
 describe("CFB-8", () => {
     test("128 bits", () => {
@@ -10,8 +10,8 @@ describe("CFB-8", () => {
             "32b9"
         );
 
-        expect(cfb_encrypt(getEncrypter(KEY128), 16, PLAINTEXT, IV, 1).subarray(0,18)).toStrictEqual(ciphertext);
-        expect(cfb_decrypt(getEncrypter(KEY128), 16, ciphertext, IV, 1)).toStrictEqual(PLAINTEXT.slice(0,18));
+        expect(cfb_encrypt(ENCRYPTER128, 16, PLAINTEXT, IV, 1).subarray(0,18)).toStrictEqual(ciphertext);
+        expect(cfb_decrypt(ENCRYPTER128, 16, ciphertext, IV, 1)).toStrictEqual(PLAINTEXT.slice(0,18));
     });
 
     test("192 bits", () => {
@@ -20,8 +20,8 @@ describe("CFB-8", () => {
             "678a"
         );
 
-        expect(cfb_encrypt(getEncrypter(KEY192), 16, PLAINTEXT, IV, 1).subarray(0,18)).toStrictEqual(ciphertext);
-        expect(cfb_decrypt(getEncrypter(KEY192), 16, ciphertext, IV, 1)).toStrictEqual(PLAINTEXT.slice(0,18));
+        expect(cfb_encrypt(ENCRYPTER192, 16, PLAINTEXT, IV, 1).subarray(0,18)).toStrictEqual(ciphertext);
+        expect(cfb_decrypt(ENCRYPTER192, 16, ciphertext, IV, 1)).toStrictEqual(PLAINTEXT.slice(0,18));
     });
 
     test("256 bits", () => {
@@ -30,8 +30,8 @@ describe("CFB-8", () => {
             "9700"
         );
 
-        expect(cfb_encrypt(getEncrypter(KEY256), 16, PLAINTEXT, IV, 1).subarray(0,18)).toStrictEqual(ciphertext);
-        expect(cfb_decrypt(getEncrypter(KEY256), 16, ciphertext, IV, 1)).toStrictEqual(PLAINTEXT.slice(0,18));
+        expect(cfb_encrypt(ENCRYPTER256, 16, PLAINTEXT, IV, 1).subarray(0,18)).toStrictEqual(ciphertext);
+        expect(cfb_decrypt(ENCRYPTER256, 16, ciphertext, IV, 1)).toStrictEqual(PLAINTEXT.slice(0,18));
     });
 });
 
@@ -44,8 +44,8 @@ describe("CFB-128", () => {
             "c04b05357c5d1c0eeac4c66f9ff7f2e6"
         );
 
-        expect(cfb_encrypt(getEncrypter(KEY128), 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
-        expect(cfb_decrypt(getEncrypter(KEY128), 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
+        expect(cfb_encrypt(ENCRYPTER128, 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
+        expect(cfb_decrypt(ENCRYPTER128, 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
     });
 
     test("192 bits", () => {
@@ -56,8 +56,8 @@ describe("CFB-128", () => {
             "c05f9f9ca9834fa042ae8fba584b09ff"
         );
 
-        expect(cfb_encrypt(getEncrypter(KEY192), 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
-        expect(cfb_decrypt(getEncrypter(KEY192), 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
+        expect(cfb_encrypt(ENCRYPTER192, 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
+        expect(cfb_decrypt(ENCRYPTER192, 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
     });
 
     test("256 bits", () => {
@@ -68,7 +68,7 @@ describe("CFB-128", () => {
             "75a385741ab9cef82031623d55b1e471"
         );
 
-        expect(cfb_encrypt(getEncrypter(KEY256), 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
-        expect(cfb_decrypt(getEncrypter(KEY256), 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
+        expect(cfb_encrypt(ENCRYPTER256, 16, PLAINTEXT, IV)).toStrictEqual(ciphertext);
+        expect(cfb_decrypt(ENCRYPTER256, 16, ciphertext, IV)).toStrictEqual(PLAINTEXT);
     });
 });

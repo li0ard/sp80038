@@ -1,7 +1,7 @@
 import { hexToBytes } from "@noble/ciphers/utils.js";
 import { describe, test, expect } from "bun:test";
-import { ecb } from "../src/";
-import { getDecrypter, getEncrypter, KEY128, KEY192, KEY256, PLAINTEXT } from "./_test_utils.js";
+import { ecb } from "./ecb.js";
+import { DECRYPTER128, DECRYPTER192, DECRYPTER256, ENCRYPTER128, ENCRYPTER192, ENCRYPTER256, PLAINTEXT } from "./_test_utils.js";
 describe("ECB", () => {
     test("128 bits", () => {
         const ciphertext = hexToBytes(
@@ -11,8 +11,8 @@ describe("ECB", () => {
             "7b0c785e27e8ad3f8223207104725dd4"
         );
 
-        expect(ecb(getEncrypter(KEY128), 16, PLAINTEXT)).toStrictEqual(ciphertext);
-        expect(ecb(getDecrypter(KEY128), 16, ciphertext)).toStrictEqual(PLAINTEXT);
+        expect(ecb(ENCRYPTER128, 16, PLAINTEXT)).toStrictEqual(ciphertext);
+        expect(ecb(DECRYPTER128, 16, ciphertext)).toStrictEqual(PLAINTEXT);
     });
 
     test("192 bits", () => {
@@ -23,8 +23,8 @@ describe("ECB", () => {
             "9a4b41ba738d6c72fb16691603c18e0e"
         );
 
-        expect(ecb(getEncrypter(KEY192), 16, PLAINTEXT)).toStrictEqual(ciphertext);
-        expect(ecb(getDecrypter(KEY192), 16, ciphertext)).toStrictEqual(PLAINTEXT);
+        expect(ecb(ENCRYPTER192, 16, PLAINTEXT)).toStrictEqual(ciphertext);
+        expect(ecb(DECRYPTER192, 16, ciphertext)).toStrictEqual(PLAINTEXT);
     });
 
     test("256 bits", () => {
@@ -35,7 +35,7 @@ describe("ECB", () => {
             "23304b7a39f9f3ff067d8d8f9e24ecc7"
         );
 
-        expect(ecb(getEncrypter(KEY256), 16, PLAINTEXT)).toStrictEqual(ciphertext);
-        expect(ecb(getDecrypter(KEY256), 16, ciphertext)).toStrictEqual(PLAINTEXT);
+        expect(ecb(ENCRYPTER256, 16, PLAINTEXT)).toStrictEqual(ciphertext);
+        expect(ecb(DECRYPTER256, 16, ciphertext)).toStrictEqual(PLAINTEXT);
     });
 });

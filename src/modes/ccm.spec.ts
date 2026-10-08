@@ -1,7 +1,7 @@
 import { hexToBytes } from "@noble/ciphers/utils.js";
 import { describe, test, expect } from "bun:test";
-import { ccm_decrypt, ccm_encrypt } from "../src/";
-import { getEncrypter } from "./_test_utils";
+import { ccm_decrypt, ccm_encrypt } from "./ccm";
+import { getEncrypter, IV } from "./_test_utils";
 
 const encrypter = getEncrypter(hexToBytes("404142434445464748494A4B4C4D4E4F"));
 
@@ -19,7 +19,7 @@ describe("CCM", () => {
     test("#2", () => {
         const nonce = hexToBytes("1011121314151617");
         const pt = hexToBytes("202122232425262728292A2B2C2D2E2F");
-        const aad = hexToBytes("000102030405060708090A0B0C0D0E0F");
+        const aad = IV;
         const ct = hexToBytes("D2A1F0E051EA5F62081A7792073D593D1FC64FBFACCD");
 
         expect(ccm_encrypt(encrypter, 16, pt, nonce, aad, 6)).toStrictEqual(ct);
