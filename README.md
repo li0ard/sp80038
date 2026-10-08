@@ -26,14 +26,14 @@ bunx jsr i @li0ard/sp80038
 ```
 
 ## Supported modes
-- [x] Electronic Codebook (ECB)
 - [x] Cipher Block Chaining (CBC)
-- [x] Cipher Feedback (CFB)
-- [x] Counter (CTR)
-- [x] Output Feedback (OFB)
-- [x] CMAC
-- [x] Galois/Counter (GCM)
 - [x] Counter with CBC-MAC (CCM)
+- [x] Cipher Feedback (CFB)
+- [x] CMAC
+- [x] Counter (CTR)
+- [x] Electronic Codebook (ECB)
+- [x] Galois/Counter (GCM)
+- [x] Output Feedback (OFB)
 
 ## Features
 - Provides simple and modern API

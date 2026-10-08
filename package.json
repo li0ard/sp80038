@@ -21,13 +21,13 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typedoc": "^0.28.19"
+    "typedoc": "^0.28.20"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@noble/ciphers": "^2.2.0"
+    "@noble/ciphers": "^2.4.0"
   },
   "files": ["dist"],
   "publishConfig": {

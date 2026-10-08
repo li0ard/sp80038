@@ -1,33 +1,34 @@
-import { type TArg, type TRet } from "@noble/ciphers/utils.js";
+import { abytes, anumber, copyBytes, type TArg, type TRet } from "@noble/ciphers/utils.js";
 import type { CipherFunc } from "../types.js";
-import { checkBlocksize, checkIvSize, xorBytes } from "../utils.js";
+import { xorBytes } from "../utils.js";
 
 /**
  * Wrapper for Cipher Feedback (CFB) mode
  * @param encrypter Cipher function for **encryption**, that takes block as input
  * @param blockSize Cipher block size
- * @param data Input data
+ * @param plaintext Plaintext
  * @param iv Initialization vector
  * @param s Segment size (in bytes, e.g CFB-8 -> `1`)
  */
 export const cfb_encrypt = (
     encrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>,
+    plaintext: TArg<Uint8Array>,
     iv: TArg<Uint8Array>,
     s: number = blockSize
 ): TRet<Uint8Array> => {
-    checkBlocksize(blockSize);
-    checkIvSize(iv, blockSize);
-
+    anumber(blockSize, "blockSize");
+    abytes(plaintext, undefined, "plaintext");
+    abytes(iv, blockSize, "iv");
+    anumber(s, "s");
     if (s < 1 || s > blockSize) throw new Error("CFB: s must be between 1 and blockSize");
 
-    const buf = new Uint8Array(iv);
-    const output = new Uint8Array(data.length);
-    for (let i = 0; i < data.length; i += s) {
+    const buf = copyBytes(iv);
+    const output = new Uint8Array(plaintext.length);
+    for (let i = 0; i < plaintext.length; i += s) {
         const keystream = encrypter(buf);
-        const seg = Math.min(s, data.length - i);
-        const ct = xorBytes(keystream.subarray(0, seg), data.subarray(i, i + seg));
+        const seg = Math.min(s, plaintext.length - i);
+        const ct = xorBytes(keystream.subarray(0, seg), plaintext.subarray(i, i + seg));
         output.set(ct, i);
         
         buf.copyWithin(0, s);
@@ -41,27 +42,29 @@ export const cfb_encrypt = (
  * Wrapper for Cipher Feedback (CFB) mode
  * @param encrypter Cipher function for **encryption**, that takes block as input
  * @param blockSize Cipher block size
- * @param data Input data
+ * @param ciphertext Ciphertext
  * @param iv Initialization vector
  * @param s Segment size (in bytes, e.g CFB-8 -> `1`)
  */
 export const cfb_decrypt = (
     encrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>,
+    ciphertext: TArg<Uint8Array>,
     iv: TArg<Uint8Array>,
     s: number = blockSize
 ): TRet<Uint8Array> => {
-    checkBlocksize(blockSize);
-    checkIvSize(iv, blockSize);
+    anumber(blockSize, "blockSize");
+    abytes(ciphertext, undefined, "ciphertext");
+    abytes(iv, blockSize, "iv");
+    anumber(s, "s");
     if (s < 1 || s > blockSize) throw new Error("CFB: s must be between 1 and blockSize");
 
-    const buf = new Uint8Array(iv);
-    const output = new Uint8Array(data.length);
-    for (let i = 0; i < data.length; i += s) {
+    const buf = copyBytes(iv);
+    const output = new Uint8Array(ciphertext.length);
+    for (let i = 0; i < ciphertext.length; i += s) {
         const keystream = encrypter(buf);
-        const seg = Math.min(s, data.length - i);
-        const ct = data.subarray(i, i + seg);
+        const seg = Math.min(s, ciphertext.length - i);
+        const ct = ciphertext.subarray(i, i + seg);
         output.set(xorBytes(keystream.subarray(0, seg), ct), i);
         
         buf.copyWithin(0, s);

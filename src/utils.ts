@@ -1,19 +1,4 @@
-import type { TArg, TRet } from "@noble/ciphers/utils.js";
-
-export const checkBlocksize = (blockSize: number) => {
-    if(blockSize < 1)
-        throw new Error(`Invalid block size: ${blockSize}. Block size MUST be positive integer`);
-}
-
-export const checkDataAligned = (data: TArg<Uint8Array>, blockSize: number) => { 
-    if (data.length % blockSize !== 0)
-        throw new Error(`Data not aligned: data length ${data.length} is not a multiple of block size ${blockSize}`);
-}
-
-export const checkIvSize = (iv: TArg<Uint8Array>, blockSize: number) => { 
-    if (iv.length != blockSize)
-        throw new Error(`Invalid IV size: ${iv.length}. IV size MUST equal to block size`);
-}
+import { abytes, anumber, type TArg, type TRet } from "@noble/ciphers/utils.js";
 
 export const xorBytes = (a: TArg<Uint8Array>, b: TArg<Uint8Array>): TRet<Uint8Array> => {
     const mlen = Math.min(a.length, b.length);
@@ -21,4 +6,21 @@ export const xorBytes = (a: TArg<Uint8Array>, b: TArg<Uint8Array>): TRet<Uint8Ar
     for(let i = 0; i < mlen; i++) result[i] = a[i] ^ b[i];
 
     return result;
+}
+
+const atitle = (title: string): string => title ? `"${title}" ` : '';
+
+export const abytesAligned = (
+    value: TArg<Uint8Array>,
+    blockSize: number,
+    title: string = ""
+): TRet<Uint8Array> => {
+    abytes(value, undefined, title);
+    anumber(blockSize, "blockSize");
+    if (value.length !== 0 && value.length % blockSize === 0) return value as TRet<Uint8Array>;
+    
+    const ofLen = ` of length aligned to ${blockSize}`;
+    const got = `length=${value.length}`;
+    const message = atitle(title) + 'expected Uint8Array' + ofLen + ', got ' + got;
+    throw new RangeError(message);
 }

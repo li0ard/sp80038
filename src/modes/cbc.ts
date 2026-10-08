@@ -1,30 +1,30 @@
-import type { TArg, TRet } from "@noble/ciphers/utils.js";
+import { abytes, anumber, copyBytes, type TArg, type TRet } from "@noble/ciphers/utils.js";
 import type { CipherFunc } from "../types.js";
-import { checkBlocksize, checkDataAligned, checkIvSize, xorBytes } from "../utils.js";
+import { abytesAligned, xorBytes } from "../utils.js";
 
 /**
  * Wrapper for Cipher Block Chaining (CBC) mode
  * @param encrypter Cipher function for encryption, that takes block as input
  * @param blockSize Cipher block size
- * @param data Input data
+ * @param plaintext Plaintext
  * @param iv Initialization vector
  */
 export const cbc_encrypt = (
     encrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>,
+    plaintext: TArg<Uint8Array>,
     iv: TArg<Uint8Array>
 ): TRet<Uint8Array> => {
-    checkBlocksize(blockSize);
-    checkDataAligned(data, blockSize)
-    checkIvSize(iv, blockSize);
+    anumber(blockSize, "blockSize");
+    abytesAligned(plaintext, blockSize, "plaintext");
+    abytes(iv, blockSize, "iv");
 
-    let buf: TArg<Uint8Array> = new Uint8Array(iv);
-    const output = new Uint8Array(data.length);
-    for(let i = 0; i < data.length; i += blockSize) {
-        const blk = encrypter(xorBytes(data.subarray(i, i + blockSize), buf));
+    const buf = copyBytes(iv);
+    const output = new Uint8Array(plaintext.length);
+    for(let i = 0; i < plaintext.length; i += blockSize) {
+        const blk = encrypter(xorBytes(plaintext.subarray(i, i + blockSize), buf));
         output.set(blk, i);
-        buf = blk.slice();
+        buf.set(blk);
     }
 
     return output;
@@ -34,25 +34,25 @@ export const cbc_encrypt = (
  * Wrapper for Cipher Block Chaining (CBC) mode
  * @param decrypter Cipher function for decryption, that takes block as input
  * @param blockSize Cipher block size
- * @param data Input data
+ * @param ciphertext Ciphertext
  * @param iv Initialization vector
  */
 export const cbc_decrypt = (
     decrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>,
+    ciphertext: TArg<Uint8Array>,
     iv: TArg<Uint8Array>
 ): TRet<Uint8Array> => {
-    checkBlocksize(blockSize);
-    checkDataAligned(data, blockSize)
-    checkIvSize(iv, blockSize);
+    anumber(blockSize, "blockSize");
+    abytesAligned(ciphertext, blockSize, "ciphertext");
+    abytes(iv, blockSize, "iv");
 
-    let buf: TArg<Uint8Array> = new Uint8Array(iv);
-    const output = new Uint8Array(data.length);
-    for(let i = 0; i < data.length; i+= blockSize) {
-        const blk = data.subarray(i,i + blockSize);
+    const buf = copyBytes(iv);
+    const output = new Uint8Array(ciphertext.length);
+    for(let i = 0; i < ciphertext.length; i+= blockSize) {
+        const blk = ciphertext.subarray(i,i + blockSize);
         output.set(xorBytes(decrypter(blk), buf), i);
-        buf = blk.slice();
+        buf.set(blk);
     }
 
     return output;
@@ -62,5 +62,10 @@ export const cbc_decrypt = (
 export const cbcmac = (
     encrypter: CipherFunc,
     blockSize: number,
-    data: TArg<Uint8Array>
-): TRet<Uint8Array> => cbc_encrypt(encrypter, blockSize, data, new Uint8Array(blockSize)).slice(-blockSize);
+    msg: TArg<Uint8Array>
+): TRet<Uint8Array> => cbc_encrypt(
+    encrypter,
+    blockSize,
+    msg,
+    new Uint8Array(blockSize)
+).slice(-blockSize);

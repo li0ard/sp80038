@@ -1,4 +1,4 @@
-import { concatBytes, numberToBytesBE, type TArg, type TRet } from "@noble/ciphers/utils.js";
+import { concatBytes, copyBytes, numberToBytesBE, type TArg, type TRet } from "@noble/ciphers/utils.js";
 import { xorBytes } from "../utils.js";
 import { GHASH } from "@noble/ciphers/_polyval.js";
 
@@ -22,7 +22,7 @@ export const galoisCtr = (
     if(data.length == 0) return new Uint8Array();
 
     const output = new Uint8Array(data.length);
-    let buf = new Uint8Array(iv);
+    const buf = copyBytes(iv);
     for (let i = 0; i < data.length; i += GCM_BLOCKSIZE) {
         const yi = xorBytes(encrypter(buf), data.subarray(i, i + GCM_BLOCKSIZE));
         output.set(yi, i);
@@ -42,9 +42,10 @@ export const deriveCounter = (
         counter.set(nonce);
         counter[15] = 1;
     } else {
-        const lenBlock = numberToBytesBE(nonce.length * 8, 16);
-        const J = new GHASH(H).update(nonce).update(lenBlock).digest();
-        counter.set(J);
+        new GHASH(H)
+            .update(nonce)
+            .update(numberToBytesBE(nonce.length * 8, 16))
+            .digestInto(counter);
     }
 }
 
@@ -53,13 +54,12 @@ export const gcmAuth = (
     tag_mask: TArg<Uint8Array>,
     ciphertext: TArg<Uint8Array>,
     aad: TArg<Uint8Array>
-): TRet<Uint8Array> => {
-    const S = new GHASH(H)
+): TRet<Uint8Array> => xorBytes(
+    tag_mask,
+    new GHASH(H)
     .update(aad).update(ciphertext)
     .update(concatBytes(
         numberToBytesBE(aad.length * 8, 8),
         numberToBytesBE(ciphertext.length * 8, 8)
-    )).digest();
-    
-    return xorBytes(tag_mask, S);
-}
+    )).digest()
+);
