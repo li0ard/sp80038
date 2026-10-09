@@ -1,6 +1,6 @@
 <p align="center">
     <b>@li0ard/sp80038</b><br>
-    <b>Cipher modes according to NIST SP 800-38 in pure TypeScript</b>
+    <b>Cipher modes according to NIST SP 800-38 (and not only) in pure TypeScript</b>
     <br>
     <a href="https://li0ard.is-cool.dev/sp80038">docs</a>
     <br><br>
@@ -25,7 +25,7 @@ npm i @li0ard/sp80038
 bunx jsr i @li0ard/sp80038
 ```
 
-## Supported modes
+## Supported modes (NIST standardized)
 - [x] Cipher Block Chaining (CBC)
 - [x] Counter with CBC-MAC (CCM)
 - [x] Cipher Feedback (CFB)
@@ -33,8 +33,12 @@ bunx jsr i @li0ard/sp80038
 - [x] Counter (CTR)
 - [x] Electronic Codebook (ECB)
 - [x] Galois/Counter (GCM)
-- [x] Infinite Garble Extension (IGE)
 - [x] Output Feedback (OFB)
+
+## Supported modes (Not NIST standardized)
+- [x] Infinite Garble Extension (IGE), described [here](https://www.links.org/files/openssl-ige.pdf)
+- [x] Synthetic Initialization Vector (SIV), [RFC 5297](https://datatracker.ietf.org/doc/html/rfc5297.html)
+
 
 ## Features
 - Provides simple and modern API

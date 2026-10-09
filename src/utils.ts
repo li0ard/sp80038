@@ -1,4 +1,4 @@
-import { abytes, anumber, type TArg, type TRet } from "@noble/ciphers/utils.js";
+import { abytes, anumber, bytesToNumberBE, copyBytes, numberToBytesBE, type TArg, type TRet } from "@noble/ciphers/utils.js";
 
 export const xorBytes = (a: TArg<Uint8Array>, b: TArg<Uint8Array>): TRet<Uint8Array> => {
     const mlen = Math.min(a.length, b.length);
@@ -24,3 +24,9 @@ export const abytesAligned = (
     const message = atitle(title) + 'expected Uint8Array' + ofLen + ', got ' + got;
     throw new RangeError(message);
 }
+
+export const numberToBytesLE = (n: bigint | number, len: number): TRet<Uint8Array> =>
+    numberToBytesBE(n, len).reverse();
+
+export const bytesToNumberLE = (bytes: TArg<Uint8Array>): bigint =>
+    bytesToNumberBE(copyBytes(bytes).reverse());
