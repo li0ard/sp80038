@@ -1,6 +1,6 @@
 <p align="center">
     <b>@li0ard/sp80038</b><br>
-    <b>Cipher modes according to NIST SP 800-38 (and not only) in pure TypeScript</b>
+    <b>Cipher modes according to NIST SP 800-38 (and not only)</b>
     <br>
     <a href="https://li0ard.is-cool.dev/sp80038">docs</a>
     <br><br>
@@ -33,6 +33,7 @@ bunx jsr i @li0ard/sp80038
 - [x] Counter (CTR)
 - [x] Electronic Codebook (ECB)
 - [x] Galois/Counter (GCM)
+- [x] Key wrap (KW/KWP)
 - [x] Output Feedback (OFB)
 
 ## Supported modes (Not NIST standardized)

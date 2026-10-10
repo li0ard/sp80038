@@ -6,6 +6,7 @@ export * from "./modes/ctr.js";
 export * from "./modes/ecb.js";
 export * from "./modes/gcm.js";
 export * from "./modes/ige.js";
+export * from "./modes/kw.js";
 export * from "./modes/ofb.js";
 export * from "./modes/siv.js";
 export * from "./types.js";
