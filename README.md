@@ -44,5 +44,5 @@ bunx jsr i @li0ard/sp80038
 ## Features
 - Provides simple and modern API
 - Most of the APIs are strictly typed
-- Fully complies with [NIST SP 800-38A](https://csrc.nist.gov/pubs/sp/800/38/a/final) and [NIST SP 800-38B](https://csrc.nist.gov/pubs/sp/800/38/b/upd1/final) standards
+- Fully complies with [NIST SP 800-38A](https://csrc.nist.gov/pubs/sp/800/38/a/final), [NIST SP 800-38B](https://csrc.nist.gov/pubs/sp/800/38/b/upd1/final), [NIST SP 800-38C](https://csrc.nist.gov/pubs/sp/800/38/c/upd1/final), [NIST SP 800-38D](https://csrc.nist.gov/pubs/sp/800/38/d/final) and [NIST SP 800-38F](https://csrc.nist.gov/pubs/sp/800/38/f/final) standards
 - Supports Bun, Node.js, Deno, Browsers
